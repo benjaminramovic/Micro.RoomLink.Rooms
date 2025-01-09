@@ -9,8 +9,8 @@ app.use(express.urlencoded({ extended: true }));
 
 const server = http.createServer(app);
 
-server.listen(8000, () => {
-  console.log('Server is running on port 8000');
+server.listen(4000, () => {
+  console.log('Server is running on port 4000');
 });
 
 app.use('/api/rooms', roomRouter); // Pretpostavka: ruta za sobe je '/rooms'

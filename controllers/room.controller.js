@@ -44,9 +44,10 @@ const create = async (req, res) => {
     try {
         //const rooms = await Room.getAll();
         //res.json({ success: true, rooms });
-        const { roomNumber } = req.body;
+        const { roomNumber, type, pricePerNight, isAvailable, capacity, description } = req.body;
         const id = uuidv4()
-        const result = await session.run(`CREATE (r:Room { id:$id, roomNumber:$roomNumber }) RETURN r`, {id, roomNumber})
+        const result = await session.run(`CREATE (r:Room { id:$id, roomNumber:$roomNumber, type:$type,  pricePerNight:$pricePerNight, isAvailable:$isAvailable, capacity:$capacity, description:$description}) RETURN r`, 
+            {id, roomNumber, type, pricePerNight, isAvailable, capacity, description});
         //const rooms = result.records.map(record => record.get('r').properties);
         const createdRoom = result.records[0].get('r').properties;
 
@@ -79,12 +80,12 @@ const deleteRoom = async (req, res) => {
 const updateRoom = async (req, res) => {
     try {
         const id = req.params.id; // ID from the URL
-        const { roomNumber } = req.body;
+        const { roomNumber, type, pricePerNight, isAvailable, capacity, description } = req.body;
 
         // Run the Neo4j query
         const result = await session.run(
-            `MATCH (r:Room {id: $id}) SET r.roomNumber=$roomNumber RETURN r`,
-            { id, roomNumber } // Pass the ID and roomNumber
+            `MATCH (r:Room {id: $id}) SET r.roomNumber=$roomNumber, r.type=$type,  r.pricePerNight=$pricePerNight, r.isAvailable=$isAvailable, r.capacity=$capacity, r.description=$description RETURN r`,
+            { id, roomNumber, type, pricePerNight, isAvailable, capacity, description } // Pass the ID and roomNumber
         );
 
         // Check if the room was found and updated
