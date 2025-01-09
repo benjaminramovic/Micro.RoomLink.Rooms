@@ -1,15 +1,19 @@
 const http = require('http');
 const express = require('express');
 const { session, driver } = require('./config/neo4j'); // Pretpostavka: konekcija se nalazi u 'config/neo4j'
+const roomRouter = require('./routes/room.route.js'); // Pretpostavka: ruta se nalazi u 'routes/room.route'
 
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const server = http.createServer(app);
 
 server.listen(8000, () => {
   console.log('Server is running on port 8000');
 });
+
+app.use('/api/rooms', roomRouter); // Pretpostavka: ruta za sobe je '/rooms'
 
 app.get('/', (req, res) => {
   res.send('Hello Benjamin!!!');
